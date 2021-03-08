@@ -50,34 +50,74 @@ function removeProduct(event) {
   const target = event.currentTarget;
   console.log('The target in remove is:', target);
 
-
   //This is the main Parent Node <tbody>
-  const parentNode = document.querySelector(".product").parentNode;
+  let parentNode = document.querySelector(".product").parentNode;
   console.log(parentNode);
 
   //This is the parent of the parent node where the event happens and 
   //that needs to be deleted the <tr> => "product" class
 
-  const parentParentNodeTarget = (target.parentNode).parentNode;
+  let parentParentNodeTarget = (target.parentNode).parentNode;
 
   removeItem = parentNode.removeChild(parentParentNodeTarget);
 
-  //In order to update the total price if we remove an item
+  //Calling again the calculateAll() in order to update the total price if we remove an item
   calculateAll();
 
   return removeItem
 }
 // ITERATION 5
 function createProduct() {
-  //... your code goes here
+
+  //Selecting the DOM elements
+  let newProductNodeList = document.querySelectorAll(".create-product input");
+  
+  let newProductName = newProductNodeList[0].value;
+
+  let newProductPrice = newProductNodeList[1].value;
+
+  //Creating the new row with the HTML elements
+
+  let createNewRow = document.createElement('TR');
+  createNewRow.setAttribute("class", "product");
+
+  createNewRow.innerHTML = `
+  <td class="name"> <span>${newProductName}</span></td>
+  <td class="price">$<span>${newProductPrice}</span></td>
+  <td class="quantity">
+    <input type="number" value="0" min="0" placeholder="Quantity" />
+  </td>
+  <td class="subtotal">$<span>0</span></td>
+  <td class="action">
+    <button class="btn btn-remove">Remove</button>
+  </td>
+  `
+  
+  //Append the new created element
+  const tbodyElement = document.getElementsByTagName("tbody")[0];
+  tbodyElement.appendChild(createNewRow);
+
+  //Clearing the input fields in the creation form
+  newProductName = newProductNodeList[0].value = "";
+
+  newProductPrice = newProductNodeList[1].value = 0;
+
+  removeElementsEvent();
+
 }
+
+function removeElementsEvent() {
+  let removeElementsBtn = document.querySelectorAll(".btn.btn-remove");
+  removeElementsBtn.forEach(button => button.addEventListener("click", removeProduct));
+}
+
+
 window.addEventListener('load', () => {
-  const calculatePricesBtn = document.getElementById('calculate');
+  let calculatePricesBtn = document.getElementById('calculate');
   calculatePricesBtn.addEventListener('click', calculateAll);
 
+  removeElementsEvent();
 
-  const removeElementsBtn = document.querySelectorAll(".btn.btn-remove");
-  removeElementsBtn.forEach(button => button.addEventListener("click", removeProduct));
-
-
+  let createElementBtn = document.getElementById("create");
+  createElementBtn.addEventListener("click", createProduct);
 });
