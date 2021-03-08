@@ -49,7 +49,23 @@ function calculateAll() {
 function removeProduct(event) {
   const target = event.currentTarget;
   console.log('The target in remove is:', target);
-  //... your code goes here
+
+
+  //This is the main Parent Node <tbody>
+  const parentNode = document.querySelector(".product").parentNode;
+  console.log(parentNode);
+
+  //This is the parent of the parent node where the event happens and 
+  //that needs to be deleted the <tr> => "product" class
+
+  const parentParentNodeTarget = (target.parentNode).parentNode;
+
+  removeItem = parentNode.removeChild(parentParentNodeTarget);
+
+  //In order to update the total price if we remove an item
+  calculateAll();
+
+  return removeItem
 }
 // ITERATION 5
 function createProduct() {
@@ -58,5 +74,10 @@ function createProduct() {
 window.addEventListener('load', () => {
   const calculatePricesBtn = document.getElementById('calculate');
   calculatePricesBtn.addEventListener('click', calculateAll);
-  //... your code goes here
+
+
+  const removeElementsBtn = document.querySelectorAll(".btn.btn-remove");
+  removeElementsBtn.forEach(button => button.addEventListener("click", removeProduct));
+
+
 });
