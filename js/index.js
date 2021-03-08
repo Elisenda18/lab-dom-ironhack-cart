@@ -2,8 +2,8 @@
 function updateSubtotal(product) {
   console.log('Calculating subtotal, yey!');
 
-  const price = document.querySelector(".price span");
-  const quantity = document.querySelector(".quantity input");
+  const price = product.querySelector(".price span");
+  const quantity = product.querySelector(".quantity input");
 
   //Price and Quantity are strings so we should transform them into numbers
 
@@ -13,7 +13,7 @@ function updateSubtotal(product) {
 
   const totalCount = priceValue * quantityValue;
 
-  const subtotalValue = document.querySelector(".subtotal span").innerText = totalCount;
+  const subtotalValue = product.querySelector(".subtotal span").innerText = totalCount;
 
   return subtotalValue;
 
@@ -28,15 +28,20 @@ function calculateAll() {
 
   end of test */ 
 
-  // ITERATION 2
+  // ITERATION 2 - Calculate the subtotal of each product
   const products = document.querySelectorAll(".product");
   
-  products.forEach(product => updateSubtotal(product));
+  let sumTotal = 0;
+  products.forEach(product => {
+    var updateProduct = updateSubtotal(product);
+    sumTotal += updateProduct;
+  });
 
+  // ITERATION 3 - Calculate & update the Total value of the Card
 
+  const totalValue = document.querySelector("#total-value span");
 
-  // ITERATION 3
-  //... your code goes here
+  return totalValue.innerHTML = sumTotal;
 }
 
 
